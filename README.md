@@ -1,0 +1,2 @@
+# GameCharacterAbilityIntegration
+ GameCharacterExtentionとGameAbilityExtensionの機能連携のためのプラグイン
