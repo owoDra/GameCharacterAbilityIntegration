@@ -42,6 +42,8 @@ void UCharacterModifier_AddAbilitySystemComponent::OnApply(APawn* Pawn) const
 
 			for (const auto& AbilitySet : AbilitySets)
 			{
+				UE_LOG(LogGCAI, Log, TEXT("++AbilitySet (Name: %s)"), *GetNameSafe(AbilitySet));
+
 				AbilitySet->GiveToAbilitySystem(NewASC, nullptr);
 			}
 		}
