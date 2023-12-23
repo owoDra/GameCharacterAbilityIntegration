@@ -12,21 +12,21 @@
 /**
  * Modifier class to add ability system component to Pawn
  */
-UCLASS(meta = (DisplayName = "CM Add Ability System Component"))
+UCLASS(meta = (DisplayName = "CM Apply Ability Set"))
 class UCharacterModifier_ApplyAbilitySet final : public UCharacterModifier
 {
 	GENERATED_BODY()
 public:
-	UCharacterModifier_ApplyAbilitySet() {}
+	UCharacterModifier_ApplyAbilitySet();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "AbilitySystem")
+	UPROPERTY(EditDefaultsOnly, Category = "ApplyAbilitySet")
 	TSoftClassPtr<UGAEAbilitySystemComponent> ComponentClass{ nullptr };
 
-	UPROPERTY(EditDefaultsOnly, Category = "AbilitySystem")
+	UPROPERTY(EditDefaultsOnly, Category = "ApplyAbilitySet")
 	TArray<TObjectPtr<UAbilitySet>> AbilitySets;
 
 protected:
-	virtual void OnApply(APawn* Pawn) const override;
+	virtual bool OnApply(APawn* Pawn) const override;
 
 };

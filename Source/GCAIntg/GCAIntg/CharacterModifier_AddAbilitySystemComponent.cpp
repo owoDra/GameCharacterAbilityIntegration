@@ -12,19 +12,19 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CharacterModifier_AddAbilitySystemComponent)
 
 
-void UCharacterModifier_AddAbilitySystemComponent::OnApply(APawn* Pawn) const
+UCharacterModifier_AddAbilitySystemComponent::UCharacterModifier_AddAbilitySystemComponent()
 {
-	check(Pawn);
+	bOnlyApplyOnLocal = false;
+	bApplyOnClient = false;
+	bApplyOnServer = true;
+}
 
-	UE_LOG(LogGCAI, Log, TEXT("[%s] On Instance Apply(%s)"),
-		Pawn->HasAuthority() ? TEXT("SERVER") : TEXT("CLIENT"), *GetNameSafe(this));
 
-	const auto* World{ Pawn->GetWorld() };
-	const auto bIsServer{ World->GetNetMode() != NM_Client };
+bool UCharacterModifier_AddAbilitySystemComponent::OnApply(APawn* Pawn) const
+{
+	const auto bCanApply{ Super::OnApply(Pawn) };
 
-	UE_LOG(LogGCAI, Log, TEXT("Adding components for %s to world %s"), *GetPathNameSafe(Pawn), *World->GetDebugDisplayName());
-
-	if (bIsServer)
+	if (bCanApply)
 	{
 		auto* LoadedComponentClass
 		{
@@ -48,4 +48,6 @@ void UCharacterModifier_AddAbilitySystemComponent::OnApply(APawn* Pawn) const
 			}
 		}
 	}
+
+	return bCanApply;
 }

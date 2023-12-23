@@ -19,7 +19,7 @@ class UCharacterModifier_AddAbilitySystemComponent final : public UCharacterModi
 {
 	GENERATED_BODY()
 public:
-	UCharacterModifier_AddAbilitySystemComponent() {}
+	UCharacterModifier_AddAbilitySystemComponent();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AddAbilitySystemComponent")
@@ -29,6 +29,6 @@ protected:
 	TArray<TObjectPtr<UAbilitySet>> AbilitySets;
 
 protected:
-	virtual void OnApply(APawn* Pawn) const override;
+	virtual bool OnApply(APawn* Pawn) const override;
 
 };

@@ -13,17 +13,18 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CharacterModifier_ApplyAbilitySet)
 
 
-void UCharacterModifier_ApplyAbilitySet::OnApply(APawn* Pawn) const
+UCharacterModifier_ApplyAbilitySet::UCharacterModifier_ApplyAbilitySet()
 {
-	check(Pawn);
+	bOnlyApplyOnLocal = false;
+	bApplyOnClient = false;
+	bApplyOnServer = true;
+}
 
-	UE_LOG(LogGCAI, Log, TEXT("[%s] On Instance Apply(%s)"),
-		Pawn->HasAuthority() ? TEXT("SERVER") : TEXT("CLIENT"), *GetNameSafe(this));
+bool UCharacterModifier_ApplyAbilitySet::OnApply(APawn* Pawn) const
+{
+	const auto bCanApply{ Super::OnApply(Pawn) };
 
-	const auto* World{ Pawn->GetWorld() };
-	const auto bIsServer{ World->GetNetMode() != NM_Client };
-
-	if (bIsServer)
+	if (bCanApply)
 	{
 		if (auto* ASC{ UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Pawn) })
 		{
@@ -35,4 +36,6 @@ void UCharacterModifier_ApplyAbilitySet::OnApply(APawn* Pawn) const
 			}
 		}
 	}
+
+	return bCanApply;
 }
