@@ -21,9 +21,6 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "ApplyAbilitySet")
-	TSoftClassPtr<UGAEAbilitySystemComponent> ComponentClass{ nullptr };
-
-	UPROPERTY(EditDefaultsOnly, Category = "ApplyAbilitySet")
 	TArray<TObjectPtr<UAbilitySet>> AbilitySets;
 
 protected:
