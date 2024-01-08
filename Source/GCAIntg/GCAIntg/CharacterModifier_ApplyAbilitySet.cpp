@@ -5,6 +5,7 @@
 #include "GCAIntgLogs.h"
 
 #include "GAEAbilitySystemComponent.h"
+#include "AbilityTagRelationshipMapping.h"
 
 #include "AbilitySystemGlobals.h"
 
@@ -28,11 +29,32 @@ bool UCharacterModifier_ApplyAbilitySet::OnApply(APawn* Pawn) const
 	{
 		if (auto* ASC{ UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Pawn) })
 		{
-			for (const auto& AbilitySet : AbilitySets)
+			for (const auto& AbilitySetSoftObject : AbilitySets)
 			{
+				auto* AbilitySet
+				{
+					AbilitySetSoftObject.IsNull() ? nullptr :
+					AbilitySetSoftObject.IsValid() ? AbilitySetSoftObject.Get() : AbilitySetSoftObject.LoadSynchronous()
+				};
+
 				UE_LOG(LogGCAI, Log, TEXT("++AbilitySet (Name: %s)"), *GetNameSafe(AbilitySet));
 
 				AbilitySet->GiveToAbilitySystem(ASC, nullptr);
+			}
+
+			if (auto* GAEASC{ Cast<UGAEAbilitySystemComponent>(ASC) })
+			{
+				if (TagRelationshipMapping.IsNull())
+				{
+					const auto* LoadedTagRelationshipMapping
+					{
+						TagRelationshipMapping.IsValid() ? TagRelationshipMapping.Get() : TagRelationshipMapping.LoadSynchronous()
+					};
+
+					UE_LOG(LogGCAI, Log, TEXT("++TagRelationshipMapping (Name: %s)"), *GetNameSafe(LoadedTagRelationshipMapping));
+
+					GAEASC->SetTagRelationshipMapping(LoadedTagRelationshipMapping);
+				}
 			}
 		}
 	}

@@ -9,6 +9,7 @@
 #include "CharacterModifier_AddAbilitySystemComponent.generated.h"
 
 class UGAEAbilitySystemComponent;
+class UAbilityTagRelationshipMapping;
 
 
 /**
@@ -26,7 +27,10 @@ protected:
 	TSoftClassPtr<UGAEAbilitySystemComponent> ComponentClass{ nullptr };
 
 	UPROPERTY(EditDefaultsOnly, Category = "AddAbilitySystemComponent")
-	TArray<TObjectPtr<UAbilitySet>> AbilitySets;
+	TArray<TSoftObjectPtr<UAbilitySet>> AbilitySets;
+
+	UPROPERTY(EditDefaultsOnly, Category = "AddAbilitySystemComponent")
+	TSoftObjectPtr<const UAbilityTagRelationshipMapping> TagRelationshipMapping;
 
 protected:
 	virtual bool OnApply(APawn* Pawn) const override;

@@ -5,6 +5,7 @@
 #include "GCAIntgLogs.h"
 
 #include "GAEAbilitySystemComponent.h"
+#include "AbilityTagRelationshipMapping.h"
 
 #include "GameFramework/Pawn.h"
 #include "Net/UnrealNetwork.h"
@@ -40,11 +41,29 @@ bool UCharacterModifier_AddAbilitySystemComponent::OnApply(APawn* Pawn) const
 
 			UE_LOG(LogGCAI, Log, TEXT("+Component (Name: %s, Class: %s)"), *GetNameSafe(NewASC), *GetNameSafe(LoadedComponentClass));
 
-			for (const auto& AbilitySet : AbilitySets)
+			for (const auto& AbilitySetSoftObject : AbilitySets)
 			{
+				auto* AbilitySet
+				{
+					AbilitySetSoftObject.IsNull() ? nullptr :
+					AbilitySetSoftObject.IsValid() ? AbilitySetSoftObject.Get() : AbilitySetSoftObject.LoadSynchronous()
+				};
+
 				UE_LOG(LogGCAI, Log, TEXT("++AbilitySet (Name: %s)"), *GetNameSafe(AbilitySet));
 
 				AbilitySet->GiveToAbilitySystem(NewASC, nullptr);
+			}
+
+			if (TagRelationshipMapping.IsNull())
+			{
+				const auto* LoadedTagRelationshipMapping
+				{
+					TagRelationshipMapping.IsValid() ? TagRelationshipMapping.Get() : TagRelationshipMapping.LoadSynchronous()
+				};
+
+				UE_LOG(LogGCAI, Log, TEXT("++TagRelationshipMapping (Name: %s)"), *GetNameSafe(LoadedTagRelationshipMapping));
+
+				NewASC->SetTagRelationshipMapping(LoadedTagRelationshipMapping);
 			}
 		}
 	}
