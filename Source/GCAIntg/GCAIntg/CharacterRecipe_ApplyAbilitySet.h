@@ -2,22 +2,22 @@
 
 #pragma once
 
-#include "CharacterModifier.h"
+#include "Recipe/CharacterRecipe.h"
 
 #include "AbilitySet.h"
 
-#include "CharacterModifier_ApplyAbilitySet.generated.h"
+#include "CharacterRecipe_ApplyAbilitySet.generated.h"
 
 
 /**
  * Modifier class to add ability system component to Pawn
  */
-UCLASS(meta = (DisplayName = "CM Apply Ability Set"))
-class UCharacterModifier_ApplyAbilitySet final : public UCharacterModifier
+UCLASS()
+class UCharacterRecipe_ApplyAbilitySet final : public UCharacterRecipe
 {
 	GENERATED_BODY()
 public:
-	UCharacterModifier_ApplyAbilitySet();
+	UCharacterRecipe_ApplyAbilitySet();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "ApplyAbilitySet")
@@ -27,6 +27,6 @@ protected:
 	TSoftObjectPtr<const UAbilityTagRelationshipMapping> TagRelationshipMapping;
 
 protected:
-	virtual bool OnApply(APawn* Pawn) const override;
+	virtual void StartSetupNonInstanced_Implementation(FCharacterRecipePawnInfo Info) const override;
 
 };

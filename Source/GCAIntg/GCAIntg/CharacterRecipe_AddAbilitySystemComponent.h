@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "CharacterModifier.h"
+#include "Recipe/CharacterRecipe.h"
 
 #include "AbilitySet.h"
 
-#include "CharacterModifier_AddAbilitySystemComponent.generated.h"
+#include "CharacterRecipe_AddAbilitySystemComponent.generated.h"
 
 class UGAEAbilitySystemComponent;
 class UAbilityTagRelationshipMapping;
@@ -15,12 +15,12 @@ class UAbilityTagRelationshipMapping;
 /**
  * Modifier class to add ability system component to Pawn
  */
-UCLASS(meta = (DisplayName = "CM Add Ability System Component"))
-class UCharacterModifier_AddAbilitySystemComponent final : public UCharacterModifier
+UCLASS()
+class UCharacterRecipe_AddAbilitySystemComponent final : public UCharacterRecipe
 {
 	GENERATED_BODY()
 public:
-	UCharacterModifier_AddAbilitySystemComponent();
+	UCharacterRecipe_AddAbilitySystemComponent();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AddAbilitySystemComponent")
@@ -33,6 +33,6 @@ protected:
 	TSoftObjectPtr<const UAbilityTagRelationshipMapping> TagRelationshipMapping;
 
 protected:
-	virtual bool OnApply(APawn* Pawn) const override;
+	virtual void StartSetupNonInstanced_Implementation(FCharacterRecipePawnInfo Info) const override;
 
 };
