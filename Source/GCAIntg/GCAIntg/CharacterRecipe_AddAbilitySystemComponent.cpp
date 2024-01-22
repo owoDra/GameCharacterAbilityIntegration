@@ -2,12 +2,11 @@
 
 #include "CharacterRecipe_AddAbilitySystemComponent.h"
 
-#include "GCAIntgLogs.h"
-
 #include "GAEAbilitySystemComponent.h"
 #include "AbilityTagRelationshipMapping.h"
 
 #include "CharacterInitStateComponent.h"
+#include "GCExtLogs.h"
 
 #include "GameFramework/Pawn.h"
 #include "Net/UnrealNetwork.h"
@@ -19,6 +18,11 @@ UCharacterRecipe_AddAbilitySystemComponent::UCharacterRecipe_AddAbilitySystemCom
 {
 	InstancingPolicy = ECharacterRecipeInstancingPolicy::NonInstanced;
 	NetExecutionPolicy = ECharacterRecipeNetExecutionPolicy::ServerOnly;
+
+#if WITH_EDITOR
+	StaticClass()->FindPropertyByName(FName{ TEXTVIEW("InstancingPolicy") })->SetPropertyFlags(CPF_DisableEditOnTemplate);
+	StaticClass()->FindPropertyByName(FName{ TEXTVIEW("NetExecutionPolicy") })->SetPropertyFlags(CPF_DisableEditOnTemplate);
+#endif
 }
 
 
@@ -38,7 +42,7 @@ void UCharacterRecipe_AddAbilitySystemComponent::StartSetupNonInstanced_Implemen
 		NewASC->RegisterComponent();
 		NewASC->InitAbilityActorInfo(Pawn, Pawn);
 
-		UE_LOG(LogGCAI, Log, TEXT("+Component (Name: %s, Class: %s)"), *GetNameSafe(NewASC), *GetNameSafe(LoadedComponentClass));
+		UE_LOG(LogGameExt_CharacterRecipe, Log, TEXT("+Component (Name: %s, Class: %s)"), *GetNameSafe(NewASC), *GetNameSafe(LoadedComponentClass));
 
 		for (const auto& AbilitySetSoftObject : AbilitySets)
 		{
@@ -48,7 +52,7 @@ void UCharacterRecipe_AddAbilitySystemComponent::StartSetupNonInstanced_Implemen
 				AbilitySetSoftObject.IsValid() ? AbilitySetSoftObject.Get() : AbilitySetSoftObject.LoadSynchronous()
 			};
 
-			UE_LOG(LogGCAI, Log, TEXT("++AbilitySet (Name: %s)"), *GetNameSafe(AbilitySet));
+			UE_LOG(LogGameExt_CharacterRecipe, Log, TEXT("++AbilitySet (Name: %s)"), *GetNameSafe(AbilitySet));
 
 			AbilitySet->GiveToAbilitySystem(NewASC, nullptr);
 		}
@@ -60,7 +64,7 @@ void UCharacterRecipe_AddAbilitySystemComponent::StartSetupNonInstanced_Implemen
 				TagRelationshipMapping.IsValid() ? TagRelationshipMapping.Get() : TagRelationshipMapping.LoadSynchronous()
 			};
 
-			UE_LOG(LogGCAI, Log, TEXT("++TagRelationshipMapping (Name: %s)"), *GetNameSafe(LoadedTagRelationshipMapping));
+			UE_LOG(LogGameExt_CharacterRecipe, Log, TEXT("++TagRelationshipMapping (Name: %s)"), *GetNameSafe(LoadedTagRelationshipMapping));
 
 			NewASC->SetTagRelationshipMapping(LoadedTagRelationshipMapping);
 		}

@@ -2,12 +2,11 @@
 
 #include "CharacterRecipe_ApplyAbilitySet.h"
 
-#include "GCAIntgLogs.h"
-
 #include "GAEAbilitySystemComponent.h"
 #include "AbilityTagRelationshipMapping.h"
 
 #include "CharacterInitStateComponent.h"
+#include "GCExtLogs.h"
 
 #include "AbilitySystemGlobals.h"
 
@@ -20,6 +19,11 @@ UCharacterRecipe_ApplyAbilitySet::UCharacterRecipe_ApplyAbilitySet()
 {
 	InstancingPolicy = ECharacterRecipeInstancingPolicy::NonInstanced;
 	NetExecutionPolicy = ECharacterRecipeNetExecutionPolicy::ServerOnly;
+
+#if WITH_EDITOR
+	StaticClass()->FindPropertyByName(FName{ TEXTVIEW("InstancingPolicy") })->SetPropertyFlags(CPF_DisableEditOnTemplate);
+	StaticClass()->FindPropertyByName(FName{ TEXTVIEW("NetExecutionPolicy") })->SetPropertyFlags(CPF_DisableEditOnTemplate);
+#endif
 }
 
 
@@ -37,7 +41,7 @@ void UCharacterRecipe_ApplyAbilitySet::StartSetupNonInstanced_Implementation(FCh
 				AbilitySetSoftObject.IsValid() ? AbilitySetSoftObject.Get() : AbilitySetSoftObject.LoadSynchronous()
 			};
 
-			UE_LOG(LogGCAI, Log, TEXT("++AbilitySet (Name: %s)"), *GetNameSafe(AbilitySet));
+			UE_LOG(LogGameExt_CharacterRecipe, Log, TEXT("++AbilitySet (Name: %s)"), *GetNameSafe(AbilitySet));
 
 			AbilitySet->GiveToAbilitySystem(ASC, nullptr);
 		}
@@ -51,7 +55,7 @@ void UCharacterRecipe_ApplyAbilitySet::StartSetupNonInstanced_Implementation(FCh
 					TagRelationshipMapping.IsValid() ? TagRelationshipMapping.Get() : TagRelationshipMapping.LoadSynchronous()
 				};
 
-				UE_LOG(LogGCAI, Log, TEXT("++TagRelationshipMapping (Name: %s)"), *GetNameSafe(LoadedTagRelationshipMapping));
+				UE_LOG(LogGameExt_CharacterRecipe, Log, TEXT("++TagRelationshipMapping (Name: %s)"), *GetNameSafe(LoadedTagRelationshipMapping));
 
 				GAEASC->SetTagRelationshipMapping(LoadedTagRelationshipMapping);
 			}
