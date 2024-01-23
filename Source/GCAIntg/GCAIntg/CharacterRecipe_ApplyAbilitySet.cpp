@@ -46,7 +46,7 @@ void UCharacterRecipe_ApplyAbilitySet::StartSetupNonInstanced_Implementation(FCh
 			AbilitySet->GiveToAbilitySystem(ASC, nullptr);
 		}
 
-		if (auto * GAEASC{ Cast<UGAEAbilitySystemComponent>(ASC) })
+		if (auto* GAEASC{ Cast<UGAEAbilitySystemComponent>(ASC) })
 		{
 			if (TagRelationshipMapping.IsNull())
 			{
