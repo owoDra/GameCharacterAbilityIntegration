@@ -48,7 +48,7 @@ void UCharacterRecipe_ApplyAbilitySet::StartSetupNonInstanced_Implementation(FCh
 
 		if (auto* GAEASC{ Cast<UGAEAbilitySystemComponent>(ASC) })
 		{
-			if (TagRelationshipMapping.IsNull())
+			if (!TagRelationshipMapping.IsNull())
 			{
 				const auto* LoadedTagRelationshipMapping
 				{
